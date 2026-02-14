@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Un Espacio Para Ti 💜</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* --- ESTILOS GENERALES (Elegancia y Calma) --- */
+        body {
+            margin: 0; padding: 0;
+            background-color: #0f0518; /* Morado casi negro */
+            color: #e0d0e6; /* Lila muy pálido para leer fácil */
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* --- PANTALLA DE INICIO (Sin bloqueo agresivo) --- */
+        #intro-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: linear-gradient(135deg, #0f0518, #240046);
+            z-index: 1000;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            transition: opacity 1.5s ease;
+        }
+        .btn-inicio {
+            padding: 15px 40px;
+            background: transparent;
+            border: 1px solid #9d4edd;
+            color: #9d4edd;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: 0.5s;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-top: 30px;
+        }
+        .btn-inicio:hover { background: #9d4edd; color: #fff; box-shadow: 0 0 20px rgba(157, 78, 221, 0.4); }
+
+        /* --- CONTENIDO PRINCIPAL --- */
+        #contenido { display: none; opacity: 0; transition: opacity 2s; }
+
+        /* SECCIONES */
+        section {
+            padding: 60px 20px;
+            min-height: 80vh;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        h1, h2 {
+            font-family: 'Playfair Display', serif;
+            color: #c77dff;
+            margin-bottom: 20px;
+        }
+        h1 { font-size: 2.5rem; font-style: italic; }
+        h2 { font-size: 1.8rem; }
+        
+        p {
+            font-size: 1.1rem; line-height: 1.8;
+            max-width: 600px; margin: 0 auto 20px auto;
+            color: #e0c3fc; font-weight: 300;
+        }
+
+        /* EFECTO MAPA (CONEXIÓN) */
+        .mapa-container {
+            position: relative; width: 280px; height: 100px; margin: 40px auto;
+        }
+        .punto {
+            width: 12px; height: 12px; background: #9d4edd;
+            border-radius: 50%; position: absolute; top: 50%;
+            box-shadow: 0 0 15px #9d4edd;
+        }
+        .hidalgo { left: 0; }
+        .poza { right: 0; }
+        .linea {
+            position: absolute; top: 56%; left: 10px;
+            width: 0; height: 2px; background: rgba(157, 78, 221, 0.5);
+            animation: conectar 3s forwards 1s;
+        }
+        .etiqueta-mapa {
+            position: absolute; top: 20px; font-size: 0.8rem; letter-spacing: 2px; color: #7b2cbf;
+        }
+        @keyframes conectar { to { width: 260px; } }
+
+        /* CARTAS DE TEXTO (Efecto Cristal) */
+        .carta-cristal {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            padding: 40px 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            opacity: 0; transform: translateY(30px); /* Para animación */
+        }
+
+        /* GALERÍA SUTIL */
+        .galeria-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 15px; max-width: 600px; margin-top: 30px;
+        }
+        .foto {
+            width: 100%; height: 250px; object-fit: cover;
+            border-radius: 10px; filter: grayscale(40%) contrast(1.1);
+            transition: 0.5s; opacity: 0.8;
+        }
+        .foto:hover { filter: grayscale(0%); opacity: 1; transform: scale(1.02); }
+
+        /* MENSAJE FINAL */
+        .final-quote {
+            font-size: 1.4rem; font-style: italic; color: #fff;
+            border-left: 3px solid #9d4edd; padding-left: 20px;
+            text-align: left; margin: 40px auto; max-width: 500px;
+        }
+
+        /* MUSICA FLOTANTE */
+        .music-control {
+            position: fixed; bottom: 20px; right: 20px;
+            background: rgba(157, 78, 221, 0.2);
+            padding: 10px; border-radius: 50%; cursor: pointer;
+            z-index: 999; animation: latido 3s infinite;
+        }
+        @keyframes latido { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+
+        /* CLASE PARA ANIMAR AL SCROLL */
+        .visible { animation: aparecer 1s forwards; }
+        @keyframes aparecer { to { opacity: 1; transform: translateY(0); } }
+
+    </style>
+</head>
+<body>
+
+    <div id="intro-screen">
+        <h1 style="font-size: 1.5rem; letter-spacing: 5px; color: #e0aaff;">COINCIDIR</h1>
+        <p style="font-size: 0.9rem; color: #999;">Un espacio seguro, solo para ti.</p>
+        <button class="btn-inicio" onclick="entrar()">ENTRAR</button>
+    </div>
+
+    <audio id="musica" loop>
+        <source src="cancion.mp3" type="audio/mp3">
+    </audio>
+
+    <div id="contenido">
+        
+        <section>
+            <div class="carta-cristal" id="sec1">
+                <h2>Hidalgo <span style="font-size: 0.8em; color: #777;">&mdash;</span> Poza Rica</h2>
+                
+                <div class="mapa-container">
+                    <span class="etiqueta-mapa hidalgo" style="left: -10px;">HGO</span>
+                    <div class="punto hidalgo"></div>
+                    <div class="linea"></div>
+                    <div class="punto poza"></div>
+                    <span class="etiqueta-mapa poza" style="right: -10px;">PR</span>
+                </div>
+
+                <p>
+                    Dicen que la distancia separa cuerpos, pero jamás voluntades.<br>
+                    Compartimos portadas, marcas y una visión que nadie más entiende.
+                </p>
+            </div>
+        </section>
+
+        <section style="background: linear-gradient(to top, #0f0518, #1a0928);">
+            <div class="carta-cristal" id="sec2">
+                <h2>A la mujer fuerte...</h2>
+                <p>
+                    Sé que estás acostumbrada a resolverlo todo sola. 
+                    Admiro esa fortaleza inquebrantable con la que llevas el mundo.
+                </p>
+                <p>
+                    Pero quiero que sepas algo: <br>
+                    <strong style="color: #c77dff;">Aquí no necesitas cargar nada.</strong>
+                </p>
+                <p>
+                    Conmigo puedes soltar el peso. Mis bromas no son inmadurez, 
+                    son mi forma de decirte: "Estás a salvo, puedes reír, puedes ser tú".
+                </p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Lo que construimos</h2>
+            <p style="font-size: 0.9rem;">(Sin etiquetas, pero con todo el sentimiento)</p>
+            
+            <div class="galeria-grid" id="sec3">
+                <img src="foto1.jpg" class="foto">
+                <img src="foto2.jpg" class="foto">
+                <img src="foto3.jpg" class="foto">
+                <img src="foto4.jpg" class="foto">
+            </div>
+        </section>
+
+        <section style="min-height: 100vh;">
+            <div class="carta-cristal" id="sec4" style="border: 1px solid #c77dff;">
+                <p style="text-align: left; font-size: 0.9rem; letter-spacing: 2px; margin-bottom: 30px;">DE MI, PARA TI:</p>
+                
+                <div class="final-quote">
+                    "Contigo me siento en casa.<br><br>
+                    No necesito etiquetas hoy.<br><br>
+                    Solo quiero seguir construyendo contigo."
+                </div>
+
+                <p style="margin-top: 40px;">
+                    No tengo prisa, pero tengo certeza. <br>
+                    Aquí estoy, firme como siempre, para ti.
+                </p>
+                
+                <br>
+                <p style="font-family: 'Playfair Display'; font-size: 1.5rem; margin-top: 20px;">💜</p>
+            </div>
+        </section>
+
+        <div class="music-control" onclick="toggleMusica()">🎵</div>
+    </div>
+
+    <script>
+        // CONTROL DE ENTRADA
+        function entrar() {
+            const intro = document.getElementById('intro-screen');
+            const content = document.getElementById('contenido');
+            const audio = document.getElementById('musica');
+
+            intro.style.opacity = '0';
+            setTimeout(() => {
+                intro.style.display = 'none';
+                content.style.display = 'block';
+                setTimeout(() => { content.style.opacity = '1'; }, 100);
+                
+                audio.volume = 0.4; // Volumen suave
+                audio.play().catch(e => console.log("Audio requiere toque"));
+                iniciarObservador(); // Inicia animaciones al bajar
+            }, 1000);
+        }
+
+        // CONTROL DE MUSICA
+        let isPlaying = true;
+        function toggleMusica() {
+            const audio = document.getElementById('musica');
+            if(isPlaying) { audio.pause(); isPlaying = false; }
+            else { audio.play(); isPlaying = true; }
+        }
+
+        // ANIMACIONES AL HACER SCROLL (APARECER SUAVE)
+        function iniciarObservador() {
+            const observador = new IntersectionObserver((entradas) => {
+                entradas.forEach(entrada => {
+                    if(entrada.isIntersecting) {
+                        entrada.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            document.querySelectorAll('.carta-cristal, .galeria-grid').forEach(el => {
+                observador.observe(el);
+            });
+        }
+    </script>
+</body>
+</html>
